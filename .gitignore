@@ -1,0 +1,6 @@
+# IDE
+.idea/
+
+# Credentials
+credentials.json
+Dockerfile

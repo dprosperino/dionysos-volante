@@ -1,0 +1,12 @@
+name: dionysos-volante
+
+channels:
+  - defaults
+
+dependencies:
+  - python=3.9
+  - pip
+  - pip:
+      - flask==1.1.2
+      - flask-wtf==0.14.3
+      - cryptography
