@@ -4,3 +4,6 @@
 # Credentials
 credentials.json
 Dockerfile
+
+# Database data
+database/
