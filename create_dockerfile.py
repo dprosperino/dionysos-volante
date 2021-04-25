@@ -61,8 +61,7 @@ def create_dockerfile(credentials: dict, output_path: str) -> None:
         f.writelines(["FROM postgres:13", "\n", "\n",
                       f"ENV POSTGRES_USER={credentials['postgres-user']}", "\n",
                       f"ENV POSTGRES_PASSWORD={credentials['postgres-password']}", "\n",
-                      f"ENV POSTGRES_DB=dionysos", "\n",
-                      f"VOLUME {credentials['postgres-dir']}:/var/lib/postgresql/data", "\n", "\n",
+                      f"ENV POSTGRES_DB=dionysos", "\n", "\n",
                       f"EXPOSE {credentials['postgres-port']}"])
 
 
