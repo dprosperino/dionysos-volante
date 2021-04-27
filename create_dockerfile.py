@@ -24,7 +24,7 @@ def parse_args() -> argparse.Namespace:
                                             " saved instead of the Dockerfile.")
     parser.add_argument("credentials", help="path to .json file holding the credentials with the keys 'postgres-user'"
                                             " and 'postgres-password'.")
-    parser.add_argument("-o", "--output", help="optional output path of created Dockerfile", action="store_true")
+    parser.add_argument("-o", "--output", help="optional output path of created Dockerfile")
     return parser.parse_args()
 
 
@@ -32,8 +32,8 @@ def parse_credentials(credentials_path: str) -> dict:
     """ returns parsed credentials from given path, returns empty dictionary if required keys are missing
 
     :param str credentials_path: path to credentials
-    :return: dictionary with keys "postgres-user", "postgres-password", "postgres-port", and "postgres-dir" with
-        respective values, if all four keys are given, otherwise it returns an empty dictionary
+    :return: dictionary with at least the keys "postgres-user" and "postgres-password" holding respective values, if
+        both keys are given, otherwise it returns an empty dictionary
     :rtype: dict
     """
     with open(credentials_path, "r") as f:
@@ -41,7 +41,7 @@ def parse_credentials(credentials_path: str) -> dict:
 
     returning_credentials = credentials
 
-    required_keys = ["postgres-user", "postgres-password", "postgres-port", "postgres-dir"]
+    required_keys = ["postgres-user", "postgres-password"]
     for required_key in required_keys:
         if required_key not in credentials:
             returning_credentials = dict()
@@ -52,8 +52,7 @@ def parse_credentials(credentials_path: str) -> dict:
 def create_dockerfile(credentials: dict, output_path: str) -> None:
     """ creates Dockerfile for PostgreSQL 13 database with initial user and password and exposes given port
 
-    :param dict credentials: dictionary containing "postgres-user", "postgres-password", "postgres-port", "postgres-dir"
-        and respective values
+    :param dict credentials: dictionary containing "postgres-user" and "postgres-password" and respective values
     :param str output_path: path to Dockerfile which should be written into, e.g. ./Dockerfile; Nb. needs the Dockerfile
         ending!
     """
@@ -62,7 +61,7 @@ def create_dockerfile(credentials: dict, output_path: str) -> None:
                       f"ENV POSTGRES_USER={credentials['postgres-user']}", "\n",
                       f"ENV POSTGRES_PASSWORD={credentials['postgres-password']}", "\n",
                       f"ENV POSTGRES_DB=dionysos", "\n", "\n",
-                      f"EXPOSE {credentials['postgres-port']}"])
+                      f"EXPOSE 5432"])  # Standard port on which PostgreSQL is running internally
 
 
 def main() -> None:
@@ -78,6 +77,7 @@ def main() -> None:
         output_path = args.output
 
     create_dockerfile(credentials=credentials, output_path=output_path)
+    print("Dockerfile created successfully, you can build using the command: 'docker build -t dionysos-volante:alpha .'")
 
 
 if __name__ == '__main__':
