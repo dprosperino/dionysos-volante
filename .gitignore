@@ -3,8 +3,8 @@
 
 # Credentials
 credentials.json
-Dockerfile
-start_database.sh
+database_config/Dockerfile
+database_config/start_database.sh
 
 # Database data
-database/
+database/raw

@@ -72,7 +72,7 @@ def main() -> None:
         sys.exit("Invalid JSON file! The JSON file did not contain the keys 'postgres-user', 'postgres-password',"
                  " 'postgres-port', and 'postgres-dir'")
 
-    output_path = "./Dockerfile"
+    output_path = "./database_config/Dockerfile"
     if args.output:
         output_path = args.output
 

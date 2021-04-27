@@ -54,7 +54,7 @@ def main() -> None:
     if not credentials:
         sys.exit("Invalid JSON file! The JSON file did not contain the keys 'postgres-port', and 'postgres-dir'")
 
-    output_path = "./start_database.sh"
+    output_path = "./database_config/start_database.sh"
 
     if args.output:
         output_path = args.output
