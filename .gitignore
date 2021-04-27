@@ -4,6 +4,7 @@
 # Credentials
 credentials.json
 Dockerfile
+start_database.sh
 
 # Database data
 database/
