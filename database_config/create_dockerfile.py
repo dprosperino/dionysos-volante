@@ -17,7 +17,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Specify a .json file containing the keys 'postgres-user' and"
                                                  " 'postgres-password' holding the respective information and pass this"
                                                  " file as an argument to this script. It will output a Dockerfile"
-                                                 " ready to build a postgres:13 image with specified credentials.",
+                                                 " ready to build a postgres:12 image with specified credentials.",
                                      epilog="Docker secrets is only available for swarm execution and docker compose."
                                             " Neither of those is available for the RaspberryPi, so in order to prevent"
                                             " the credentials for being tracked on version control, this script is"
@@ -50,14 +50,17 @@ def parse_credentials(credentials_path: str) -> dict:
 
 
 def create_dockerfile(credentials: dict, output_path: str) -> None:
-    """ creates Dockerfile for PostgreSQL 13 database with initial user and password and exposes given port
+    """ creates Dockerfile for PostgreSQL 12 database with initial user and password and exposes given port
 
+    NB. PostgreSQL 12 has been chosen, since we are going to use the flask-user package, which requires SQLAlchemy,
+    which in turn only supports PostgreSQL 12 so far (https://docs.sqlalchemy.org/en/14/dialects/postgresql.html last
+    accessed 2021-04-28)
     :param dict credentials: dictionary containing "postgres-user" and "postgres-password" and respective values
     :param str output_path: path to Dockerfile which should be written into, e.g. ./Dockerfile; Nb. needs the Dockerfile
         ending!
     """
     with open(output_path, "w") as f:
-        f.writelines(["FROM postgres:13", "\n", "\n",
+        f.writelines(["FROM postgres:12", "\n", "\n",
                       f"ENV POSTGRES_USER={credentials['postgres-user']}", "\n",
                       f"ENV POSTGRES_PASSWORD={credentials['postgres-password']}", "\n",
                       f"ENV POSTGRES_DB=dionysos", "\n", "\n",
